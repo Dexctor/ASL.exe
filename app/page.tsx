@@ -42,14 +42,14 @@ export default function Home() {
                 {card.title}
               </h2>
               <span className="mt-6 inline-flex text-[clamp(0.7rem,0.9vw,0.95rem)] uppercase tracking-[0.3em] text-neon-cyan">
-                Acces
+                Accès
               </span>
             </Link>
           ))}
         </div>
         <p className="mx-auto max-w-4xl text-[clamp(0.95rem,1.6vw,1.4rem)] text-slate-200 normal-case">
-          Un espace neon pour synchroniser la mission, tester tes choix et
-          rejoindre la Best Team. Connecte-toi, le systeme est en ligne.
+          Un espace néon pour synchroniser la mission, tester tes choix et
+          rejoindre la Best Team. Connecte-toi, le système est en ligne.
         </p>
       </section>
     </main>
