@@ -18,15 +18,23 @@ export default function RootLayout({
       <body className="antialiased text-slate-100">
         <div className="relative min-h-screen overflow-x-hidden">
           <div
-            className="pointer-events-none fixed inset-0 bg-aurora"
+            className="pointer-events-none fixed inset-0 bg-tron-base"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none fixed inset-0 bg-grid"
+            className="pointer-events-none fixed inset-0 bg-tron-beams"
             aria-hidden="true"
           />
           <div
-            className="pointer-events-none fixed inset-0 scanlines"
+            className="pointer-events-none fixed inset-0 bg-tron-circuit"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none fixed inset-0 bg-tron-scanlines"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none fixed inset-x-0 bottom-0 h-[55vh] bg-tron-grid"
             aria-hidden="true"
           />
           <AudioController />
