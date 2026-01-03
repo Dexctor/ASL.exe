@@ -1,26 +1,315 @@
+@config "../tailwind.config.ts";
 @import "tailwindcss";
 
+@font-face {
+  font-family: "BlackF";
+  src: url("/font/BlackF.otf") format("opentype");
+  font-display: swap;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #05070c;
+  --foreground: #e9fbff;
+  --neon-cyan: #2dfaff;
+  --neon-pink: #ff5edb;
+  --neon-blue: #4c6bff;
+  --neon-lime: #b7ff2a;
+  --panel: rgba(11, 18, 32, 0.8);
+  --panel-strong: rgba(10, 16, 28, 0.92);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Segoe UI";
+  --font-mono: "Consolas";
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  font-size: 16px;
+}
+
+@media (min-width: 2000px) {
+  html {
+    font-size: clamp(18px, 0.8vw + 10px, 26px);
+  }
+}
+
+@media (min-width: 2600px) {
+  html {
+    font-size: clamp(20px, 1vw + 10px, 34px);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Segoe UI", "Arial", sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.4;
+}
+
+::selection {
+  background: rgba(45, 250, 255, 0.3);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid rgba(45, 250, 255, 0.9);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(45, 250, 255, 0.25);
+}
+
+.bg-aurora {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(45, 250, 255, 0.18), transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(255, 94, 219, 0.18), transparent 50%),
+    radial-gradient(circle at 30% 85%, rgba(183, 255, 42, 0.15), transparent 55%),
+    linear-gradient(135deg, rgba(9, 14, 26, 0.95), rgba(6, 10, 20, 0.98));
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(45, 250, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 250, 255, 0.12) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(circle at top, rgba(0, 0, 0, 0.9), transparent 70%);
+  opacity: 0.35;
+  animation: grid-drift 22s linear infinite;
+}
+
+.scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.06),
+    rgba(255, 255, 255, 0.06) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  opacity: 0.25;
+  mix-blend-mode: soft-light;
+}
+
+.glass-panel {
+  background: var(--panel);
+  border: 1px solid rgba(45, 250, 255, 0.25);
+  box-shadow:
+    0 0 12px rgba(45, 250, 255, 0.15),
+    inset 0 0 18px rgba(45, 250, 255, 0.08);
+  backdrop-filter: blur(12px);
+}
+
+.neon-border {
+  border: 1px solid rgba(45, 250, 255, 0.35);
+  box-shadow:
+    0 0 18px rgba(45, 250, 255, 0.25),
+    inset 0 0 14px rgba(45, 250, 255, 0.12);
+}
+
+.text-glow {
+  text-shadow:
+    0 0 12px rgba(45, 250, 255, 0.65),
+    0 0 24px rgba(45, 250, 255, 0.35);
+}
+
+.tron-font {
+  font-family: "BlackF", "Segoe UI", sans-serif;
+}
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  text-shadow:
+    0 0 18px rgba(45, 250, 255, 0.6),
+    0 0 36px rgba(45, 250, 255, 0.35);
+  animation: glitch-shift 4.2s infinite;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.glitch-text::before {
+  color: var(--neon-cyan);
+  clip-path: inset(0 0 55% 0);
+  text-shadow: -3px 0 rgba(255, 94, 219, 0.7);
+  animation: glitch-slice-1 2.4s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  color: var(--neon-pink);
+  clip-path: inset(45% 0 0 0);
+  text-shadow: 3px 0 rgba(183, 255, 42, 0.7);
+  animation: glitch-slice-2 2.1s infinite linear alternate-reverse;
+}
+
+.liquid-fill {
+  position: relative;
+  background: linear-gradient(90deg, #9bff2a 0%, #7cff6b 50%, #b7ff2a 100%);
+  background-size: 200% 100%;
+  animation: liquid-flow 3.6s linear infinite;
+  box-shadow: 0 0 26px rgba(183, 255, 42, 0.95);
+}
+
+.liquid-fill::before,
+.liquid-fill::after {
+  content: "";
+  position: absolute;
+  inset: -60% 0 0 0;
+  background: radial-gradient(circle at 30% 60%, rgba(255, 255, 255, 0.4), transparent 60%);
+  opacity: 0.5;
+  animation: liquid-wave 4.4s ease-in-out infinite;
+}
+
+.liquid-fill::after {
+  opacity: 0.35;
+  animation-delay: -2.2s;
+}
+
+.urgent-timer {
+  border-color: rgba(255, 94, 219, 0.85);
+  color: #ff5edb;
+  box-shadow:
+    0 0 22px rgba(255, 94, 219, 0.65),
+    0 0 60px rgba(255, 94, 219, 0.35);
+  animation: urgency-glow 1s ease-in-out infinite;
+}
+
+.urgent-text {
+  color: #ff5edb;
+  text-shadow: 0 0 14px rgba(255, 94, 219, 0.8);
+  animation: urgency-text 1s steps(2, end) infinite;
+}
+
+@keyframes grid-drift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 120px 80px, 120px 80px;
+  }
+}
+
+@keyframes liquid-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes liquid-wave {
+  0%,
+  100% {
+    transform: translateX(-8%);
+  }
+  50% {
+    transform: translateX(8%);
+  }
+}
+
+@keyframes urgency-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 22px rgba(255, 94, 219, 0.65),
+      0 0 60px rgba(255, 94, 219, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 32px rgba(255, 94, 219, 0.85),
+      0 0 90px rgba(255, 94, 219, 0.45);
+  }
+}
+
+@keyframes urgency-text {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes glitch-shift {
+  0%,
+  92%,
+  100% {
+    transform: translate(0);
+  }
+  93% {
+    transform: translate(-2px, 1px);
+  }
+  94% {
+    transform: translate(2px, -1px);
+  }
+  95% {
+    transform: translate(-3px, 0);
+  }
+  96% {
+    transform: translate(3px, 1px);
+  }
+  97% {
+    transform: translate(-1px, -2px);
+  }
+}
+
+@keyframes glitch-slice-1 {
+  0%,
+  100% {
+    transform: translate(0);
+    opacity: 0.8;
+  }
+  30% {
+    transform: translate(-2px, -1px);
+  }
+  60% {
+    transform: translate(3px, 1px);
+    opacity: 0.6;
+  }
+}
+
+@keyframes glitch-slice-2 {
+  0%,
+  100% {
+    transform: translate(0);
+    opacity: 0.75;
+  }
+  25% {
+    transform: translate(2px, 1px);
+  }
+  55% {
+    transform: translate(-3px, -1px);
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .bg-grid,
+  .glitch-text,
+  .glitch-text::before,
+  .glitch-text::after,
+  .liquid-fill,
+  .urgent-timer,
+  .urgent-text {
+    animation: none !important;
+  }
 }

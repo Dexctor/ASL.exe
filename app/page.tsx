@@ -1,65 +1,57 @@
-import Image from "next/image";
+import Link from "next/link";
+
+const cards = [
+  {
+    href: "/dernier-rempart",
+    title: "Le Dernier Rempart",
+  },
+  {
+    href: "/bienvenue-les-asl",
+    title: "Bienvenue les ASL",
+  },
+  {
+    href: "/best-team",
+    title: "La Best Team",
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative z-10">
+      <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-screen-xl flex-col justify-center gap-10 px-6 pb-16 pt-8 text-center sm:pt-14">
+        <div className="mx-auto max-w-4xl">
+          <p className="text-[clamp(10px,1vw,16px)] uppercase tracking-[0.5em] text-neon-cyan/80">
+            Protocole d'accueil
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <h1
+            className="tron-font glitch-text mt-5 text-[clamp(2.2rem,5.5vw,5.2rem)] font-semibold tracking-[0.35em] text-white"
+            data-text="ASL.EXE"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            ASL.EXE
+          </h1>
         </div>
-      </main>
-    </div>
+        <div className="grid gap-6 md:grid-cols-3">
+          {cards.map((card) => (
+            <Link
+              key={card.href}
+              href={card.href}
+              className="group relative overflow-hidden rounded-3xl border border-neon-cyan/30 bg-midnight/70 p-7 text-left transition duration-300 hover:-translate-y-1 hover:border-neon-cyan/60 hover:bg-midnight/80 hover:shadow-neon hover:scale-[1.01]"
+            >
+              <div className="absolute -right-10 -top-10 h-24 w-24 rounded-full bg-neon-cyan/10 blur-2xl transition group-hover:bg-neon-cyan/20" />
+              <h2 className="tron-font text-[clamp(1.2rem,2vw,2.1rem)] font-semibold text-white">
+                {card.title}
+              </h2>
+              <span className="mt-6 inline-flex text-[clamp(0.7rem,0.9vw,0.95rem)] uppercase tracking-[0.3em] text-neon-cyan">
+                Acces
+              </span>
+            </Link>
+          ))}
+        </div>
+        <p className="mx-auto max-w-4xl text-[clamp(0.95rem,1.6vw,1.4rem)] text-slate-200 normal-case">
+          Un espace neon pour synchroniser la mission, tester tes choix et
+          rejoindre la Best Team. Connecte-toi, le systeme est en ligne.
+        </p>
+      </section>
+    </main>
   );
 }
