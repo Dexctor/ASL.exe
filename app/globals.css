@@ -227,6 +227,24 @@ body {
   animation: glitch-question-slice-2 2.8s infinite linear alternate-reverse;
 }
 
+.glitch-urgent {
+  animation-duration: 2.2s;
+  text-shadow:
+    0 0 18px rgba(255, 94, 219, 0.55),
+    0 0 38px rgba(76, 107, 255, 0.35);
+}
+
+.glitch-urgent::before {
+  animation-duration: 1.6s;
+  text-shadow: -3px 0 rgba(255, 94, 219, 0.7);
+}
+
+.glitch-urgent::after {
+  animation-duration: 1.4s;
+  text-shadow: 3px 0 rgba(45, 250, 255, 0.7);
+}
+
+
 .liquid-fill {
   position: relative;
   background: linear-gradient(90deg, #2dfaff 0%, #4c6bff 50%, #2dfaff 100%);
@@ -249,6 +267,31 @@ body {
   opacity: 0.35;
   animation-delay: -2.2s;
 }
+
+.choice-sweep {
+  background-image: linear-gradient(
+    120deg,
+    rgba(45, 250, 255, 0) 0%,
+    rgba(45, 250, 255, 0.25) 45%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(45, 250, 255, 0.25) 55%,
+    rgba(45, 250, 255, 0) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 120% 0;
+  background-repeat: no-repeat;
+  animation: choice-sweep 0.5s ease-out 1;
+}
+
+@keyframes choice-sweep {
+  0% {
+    background-position: 120% 0;
+  }
+  100% {
+    background-position: -120% 0;
+  }
+}
+
 
 .urgent-timer {
   border-color: rgba(255, 94, 219, 0.85);
@@ -457,6 +500,10 @@ body {
   .glitch-question,
   .glitch-question::before,
   .glitch-question::after,
+  .glitch-urgent,
+  .glitch-urgent::before,
+  .glitch-urgent::after,
+  .choice-sweep,
   .liquid-fill,
   .urgent-timer,
   .urgent-text {
