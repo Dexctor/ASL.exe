@@ -1,6 +1,7 @@
 "use client";
 
 import type { Variants } from "framer-motion";
+import type { CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useReducer, useRef, useState } from "react";
 import HumanityBar from "@/components/HumanityBar";
@@ -80,9 +81,6 @@ export default function GameEngine() {
   const answeredRef = useRef(answered);
   const completedRef = useRef(completed);
   const resolvingRef = useRef(false);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const hasInteractedRef = useRef(false);
-  const lastBeepSecondRef = useRef<number | null>(null);
 
   useEffect(() => {
     answeredRef.current = answered;
@@ -109,7 +107,6 @@ export default function GameEngine() {
       return;
     }
     dispatch({ type: "RESET_QUESTION" });
-    lastBeepSecondRef.current = null;
     const id = window.requestAnimationFrame(() => {
       dispatch({ type: "READY" });
     });
@@ -123,6 +120,14 @@ export default function GameEngine() {
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringOffset = ringCircumference * (1 - timeLeftRatio);
   const ringTransition = reduceMotion ? "none" : "stroke-dashoffset 0.2s linear";
+  const resultPercent = Math.round(humanity);
+  const hudRadius = 78;
+  const hudCircumference = 2 * Math.PI * hudRadius;
+  const hudOffset = hudCircumference * (1 - resultPercent / 100);
+  const hudStyles = {
+    "--hud-circ": `${hudCircumference}`,
+    "--hud-offset": `${hudOffset}`,
+  } as CSSProperties;
   const qaAnimation = uiState.phase === "fade-out" ? "fading" : "visible";
   const easeOut = [0.16, 1, 0.3, 1] as const;
   const easeIn = [0.4, 0, 0.7, 0.2] as const;
@@ -158,85 +163,8 @@ export default function GameEngine() {
     }),
   };
 
-  const getAudioContext = useCallback(() => {
-    if (typeof window === "undefined") {
-      return null;
-    }
-    if (!audioContextRef.current) {
-      const AudioContextClass =
-        window.AudioContext ||
-        (window as typeof window & { webkitAudioContext?: typeof AudioContext })
-          .webkitAudioContext;
-      if (!AudioContextClass) {
-        return null;
-      }
-      audioContextRef.current = new AudioContextClass();
-    }
-    return audioContextRef.current;
-  }, []);
 
-  const markInteracted = useCallback(() => {
-    hasInteractedRef.current = true;
-    const context = getAudioContext();
-    if (context && context.state === "suspended") {
-      void context.resume();
-    }
-  }, [getAudioContext]);
-
-  const playTone = useCallback(
-    (
-      frequency: number,
-      duration: number,
-      type: OscillatorType,
-      volume: number
-    ) => {
-      if (!hasInteractedRef.current) {
-        return;
-      }
-      const context = getAudioContext();
-      if (!context) {
-        return;
-      }
-      const oscillator = context.createOscillator();
-      const gain = context.createGain();
-      oscillator.type = type;
-      oscillator.frequency.value = frequency;
-      oscillator.connect(gain);
-      gain.connect(context.destination);
-      const now = context.currentTime;
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(volume, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-      oscillator.start(now);
-      oscillator.stop(now + duration);
-    },
-    [getAudioContext]
-  );
-
-  const playClick = useCallback(() => {
-    playTone(900, 0.05, "square", 0.04);
-  }, [playTone]);
-
-  const playUrgentBeep = useCallback(() => {
-    playTone(740, 0.08, "sine", 0.05);
-  }, [playTone]);
-
-  useEffect(() => {
-    return () => {
-      const context = audioContextRef.current;
-      if (context && context.state !== "closed") {
-        context.close().catch(() => {});
-      }
-    };
-  }, []);
-
-
-
-  const lockAnswer = useCallback((
-    choiceIndex: number,
-    questionIndex: number,
-    withSound = true
-  ) => {
+  const lockAnswer = useCallback((choiceIndex: number, questionIndex: number) => {
     if (
       completedRef.current ||
       answeredRef.current[questionIndex] !== undefined
@@ -251,13 +179,9 @@ export default function GameEngine() {
       ...prev,
       [questionIndex]: choiceIndex,
     }));
-    if (withSound) {
-      markInteracted();
-      playClick();
-    }
     dispatch({ type: "LOCK" });
     setPulseIndex(questionIndex);
-  }, [dispatch, markInteracted, playClick]);
+  }, [dispatch]);
 
   const startResolution = useCallback(
     (questionIndex: number) => {
@@ -295,7 +219,7 @@ export default function GameEngine() {
         choiceIndex = getLowestChoiceIndex(
           QUESTIONS[questionIndex]?.scores ?? []
         );
-        lockAnswer(choiceIndex, questionIndex, false);
+        lockAnswer(choiceIndex, questionIndex);
       }
       startResolution(questionIndex);
     },
@@ -315,34 +239,33 @@ export default function GameEngine() {
     return () => window.clearTimeout(timeoutId);
   }, [activeIndex, completed, offsetMs, questionStartMs, resolveQuestion]);
 
-  useEffect(() => {
-    if (completed || uiState.phase !== "question") {
-      return;
-    }
-    if (timeLeftSeconds > 3 || timeLeftSeconds <= 0) {
-      return;
-    }
-    if (lastBeepSecondRef.current === timeLeftSeconds) {
-      return;
-    }
-    playUrgentBeep();
-    lastBeepSecondRef.current = timeLeftSeconds;
-  }, [completed, playUrgentBeep, timeLeftSeconds, uiState.phase]);
-
   if (completed) {
     return (
       <div className="mx-auto w-full max-w-5xl">
         <div className="relative overflow-hidden rounded-[32px] border border-neon-cyan/30 bg-midnight/70 px-5 py-6 shadow-[0_0_40px_rgba(45,250,255,0.25)] sm:px-10 sm:py-10">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(76,107,255,0.12),transparent_60%)] opacity-70" />
           <div className="pointer-events-none absolute inset-6 rounded-[24px] border border-neon-cyan/20" />
-          <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-4 rounded-3xl border border-neon-cyan/30 bg-slate-950/70 px-6 py-8 text-center shadow-[0_0_24px_rgba(45,250,255,0.2)] sm:px-10 sm:py-10">
+          <div className="relative mx-auto flex max-w-2xl flex-col items-center gap-6 rounded-3xl border border-neon-cyan/30 bg-slate-950/70 px-6 py-8 text-center shadow-[0_0_24px_rgba(45,250,255,0.2)] sm:px-10 sm:py-10">
             <p className="text-[clamp(0.55rem,0.8vw,0.8rem)] uppercase tracking-[0.5em] text-neon-cyan/70">
               Résultat
             </p>
-            <h2 className="tron-font text-[clamp(1.4rem,3.2vw,3.2rem)] font-semibold text-neon-cyan">
-              Humanité : {Math.round(humanity)}%
-            </h2>
-            <div className="h-px w-32 bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
+            <div className="hud-ring-wrap" style={hudStyles}>
+              <svg className="hud-ring" viewBox="0 0 200 200" aria-hidden="true">
+                <circle className="hud-ring-track" cx="100" cy="100" r={hudRadius} />
+                <circle className="hud-ring-progress" cx="100" cy="100" r={hudRadius} />
+              </svg>
+              <div className="hud-ring-core">
+                <div className="tron-font text-[clamp(2rem,6vw,4.6rem)] font-semibold text-neon-cyan text-glow">
+                  {resultPercent}%
+                </div>
+                <div className="text-[clamp(0.55rem,0.8vw,0.75rem)] uppercase tracking-[0.4em] text-neon-cyan/70">
+                  Humanité
+                </div>
+              </div>
+              <div className="hud-scan" aria-hidden="true" />
+              <div className="hud-grid" aria-hidden="true" />
+            </div>
+            <div className="h-px w-36 bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
             <p className="text-[clamp(0.85rem,1.2vw,1.1rem)] text-slate-200">
               Le protocole est stabilisé. Tu peux accéder à Kaxon Rouge.
             </p>
@@ -368,7 +291,7 @@ export default function GameEngine() {
         {uiState.showQA ? (
           <motion.div
             key={activeIndex}
-            className="flex w-full flex-col items-center gap-4"
+            className="flex w-full flex-col items-center gap-6"
             variants={qaVariants}
             initial="hidden"
             animate={qaAnimation}
@@ -380,11 +303,26 @@ export default function GameEngine() {
       <div className="text-[clamp(9px,0.9vw,13px)] uppercase tracking-[0.4em] text-neon-cyan/50">
         Règles : 10 dilemmes - 20 s - Humanité 0-100 %
       </div>
+      <div className="flex items-center gap-2" aria-hidden="true">
+        {QUESTIONS.map((_, index) => {
+          const isActive = index <= activeIndex;
+          return (
+            <span
+              key={`progress-${index}`}
+              className={`h-1.5 w-1.5 rounded-full ${
+                isActive
+                  ? "bg-neon-cyan shadow-[0_0_8px_rgba(45,250,255,0.7)]"
+                  : "bg-slate-700/60"
+              }`}
+            />
+          );
+        })}
+      </div>
       <div
-        className={`relative tron-font flex items-center justify-center rounded-full border-4 border-neon-cyan/60 bg-neon-cyan/10 text-neon-cyan shadow-[0_0_40px_rgba(45,250,255,0.7)] animate-pulseGlow ${
+        className={`relative tron-font flex items-center justify-center rounded-full border-4 border-neon-cyan/60 bg-neon-cyan/10 p-2 text-neon-cyan shadow-[0_0_40px_rgba(45,250,255,0.7)] animate-pulseGlow ${
           isLedMode
-            ? "h-[clamp(6.5rem,18vh,13.5rem)] w-[clamp(6.5rem,18vh,13.5rem)]"
-            : "h-[clamp(4.8rem,14vh,8.5rem)] w-[clamp(4.8rem,14vh,8.5rem)]"
+            ? "h-[clamp(9rem,24.25vh,18.6rem)] w-[clamp(9rem,24.25vh,18.6rem)]"
+            : "h-[clamp(6.7rem,19.25vh,11.8rem)] w-[clamp(6.7rem,19.25vh,11.8rem)]"
         } ${isUrgent ? "urgent-timer" : ""}`}
       >
         <svg
@@ -414,7 +352,7 @@ export default function GameEngine() {
           />
         </svg>
         <span
-          className={`font-bold tabular-nums ${isUrgent ? "urgent-text" : ""} ${
+          className={`font-bold tabular-nums leading-none ${isUrgent ? "urgent-text" : ""} ${
             isLedMode
               ? "text-[clamp(2.6rem,7vw,6.2rem)]"
               : "text-[clamp(1.9rem,5vw,4rem)]"
@@ -423,7 +361,7 @@ export default function GameEngine() {
           {timeLeftSeconds}
         </span>
         <span
-          className={`ml-2 text-[clamp(0.9rem,2vw,2.4rem)] font-semibold ${
+          className={`ml-2 text-[clamp(0.9rem,2vw,2.4rem)] font-semibold leading-none ${
             isUrgent ? "urgent-text" : ""
           }`}
         >
@@ -433,8 +371,8 @@ export default function GameEngine() {
       <h2
         className={`glitch-question mx-auto max-w-5xl font-semibold leading-[1.2] text-white normal-case transition duration-300 hover:text-neon-cyan ${
           isLedMode
-            ? "text-[clamp(1.8rem,4.6vw,4.2rem)]"
-            : "text-[clamp(1.3rem,3.6vw,2.8rem)]"
+            ? "text-[clamp(2rem,5vw,4.6rem)]"
+            : "text-[clamp(1.45rem,3.9vw,3.1rem)]"
         } ${isUrgent ? "glitch-urgent" : ""}`}
         data-text={currentQuestion.title}
         aria-live="polite"
@@ -466,7 +404,7 @@ export default function GameEngine() {
                     : "text-[clamp(1rem,2.2vw,1.9rem)]"
                 } ${
                   isSelected
-                    ? "border-neon-lime/80 text-neon-lime bg-neon-lime/10"
+                    ? "border-neon-lime/80 text-neon-lime bg-neon-lime/10 shadow-[0_0_18px_rgba(183,255,42,0.35)]"
                     : "border-neon-cyan/60 text-white"
                 } ${
                   shouldPulse

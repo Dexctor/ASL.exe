@@ -292,6 +292,111 @@ body {
   }
 }
 
+.hud-ring-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(10rem, 28vw, 18rem);
+  height: clamp(10rem, 28vw, 18rem);
+}
+
+.hud-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.hud-ring-track {
+  fill: transparent;
+  stroke: rgba(45, 250, 255, 0.22);
+  stroke-width: 6;
+}
+
+.hud-ring-progress {
+  fill: transparent;
+  stroke: #2dfaff;
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-dasharray: var(--hud-circ);
+  stroke-dashoffset: var(--hud-offset);
+  filter: drop-shadow(0 0 12px rgba(45, 250, 255, 0.65));
+  animation: hud-ring-fill 1.25s ease-out 0.1s both;
+}
+
+.hud-ring-core {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 78%;
+  height: 78%;
+  border-radius: 9999px;
+  border: 1px solid rgba(45, 250, 255, 0.25);
+  background:
+    radial-gradient(circle at 30% 25%, rgba(76, 107, 255, 0.25), transparent 55%),
+    radial-gradient(circle at 70% 70%, rgba(45, 250, 255, 0.2), transparent 60%),
+    rgba(6, 12, 24, 0.85);
+  box-shadow:
+    inset 0 0 18px rgba(45, 250, 255, 0.15),
+    0 0 30px rgba(45, 250, 255, 0.2);
+}
+
+.hud-scan {
+  position: absolute;
+  inset: 12%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    120deg,
+    transparent 25%,
+    rgba(45, 250, 255, 0.2) 50%,
+    transparent 75%
+  );
+  mix-blend-mode: screen;
+  animation: hud-scan 2.6s linear infinite;
+}
+
+.hud-grid {
+  position: absolute;
+  inset: 8%;
+  border-radius: 9999px;
+  border: 1px dashed rgba(45, 250, 255, 0.2);
+  opacity: 0.8;
+  animation: hud-grid-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes hud-ring-fill {
+  from {
+    stroke-dashoffset: var(--hud-circ);
+  }
+  to {
+    stroke-dashoffset: var(--hud-offset);
+  }
+}
+
+@keyframes hud-scan {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 0.35;
+  }
+}
+
+@keyframes hud-grid-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
 
 .urgent-timer {
   border-color: rgba(255, 94, 219, 0.85);
@@ -504,6 +609,9 @@ body {
   .glitch-urgent::before,
   .glitch-urgent::after,
   .choice-sweep,
+  .hud-ring-progress,
+  .hud-scan,
+  .hud-grid,
   .liquid-fill,
   .urgent-timer,
   .urgent-text {

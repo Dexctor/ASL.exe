@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import AudioController from "@/components/AudioController";
+import IntroVideoModal from "@/components/IntroVideoModal";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ export default function RootLayout({
             className="pointer-events-none fixed inset-x-0 bottom-0 h-[55vh] bg-tron-grid"
             aria-hidden="true"
           />
-          <AudioController />
+          <IntroVideoModal />
           <div className="relative z-10">
             <header className="flex items-center justify-between px-6 py-6 sm:px-10">
               <Link
