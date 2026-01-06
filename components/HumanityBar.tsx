@@ -32,8 +32,11 @@ export default function HumanityBar({
   useEffect(() => {
     if (transitionMs <= 0) {
       animatedRef.current = percentage;
-      setAnimatedPercent(percentage);
-      return;
+      let rafId = 0;
+      rafId = window.requestAnimationFrame(() => {
+        setAnimatedPercent(percentage);
+      });
+      return () => window.cancelAnimationFrame(rafId);
     }
     if (animatedRef.current === percentage) {
       return;

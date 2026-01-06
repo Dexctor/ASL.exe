@@ -16,7 +16,7 @@ export default function useQuestionTimer({ durationMs, resetKey }: Options) {
     [durationMs]
   );
   const [offsetMs, setOffsetMs] = useState(0);
-  const [startMs, setStartMs] = useState(Date.now());
+  const [startMs, setStartMs] = useState(0);
   const [timeLeftMs, setTimeLeftMs] = useState(durationMs);
   const [timeLeftSeconds, setTimeLeftSeconds] = useState(initialSeconds);
   const [timeLeftRatio, setTimeLeftRatio] = useState(1);
@@ -43,10 +43,14 @@ export default function useQuestionTimer({ durationMs, resetKey }: Options) {
 
   useEffect(() => {
     const nextStart = Date.now() + offsetMs;
-    setStartMs(nextStart);
-    setTimeLeftMs(durationMs);
-    setTimeLeftSeconds(initialSeconds);
-    setTimeLeftRatio(1);
+    let rafId = 0;
+    rafId = window.requestAnimationFrame(() => {
+      setStartMs(nextStart);
+      setTimeLeftMs(durationMs);
+      setTimeLeftSeconds(initialSeconds);
+      setTimeLeftRatio(1);
+    });
+    return () => window.cancelAnimationFrame(rafId);
   }, [durationMs, initialSeconds, offsetMs, resetKey]);
 
   useEffect(() => {

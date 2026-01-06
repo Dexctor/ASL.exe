@@ -6,11 +6,7 @@ const VIDEO_SRC =
   "https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&mute=1&playsinline=1&list=RDdQw4w9WgXcQ&start_radio=1";
 
 export default function IntroVideoModal() {
-  const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    setIsOpen(true);
-  }, []);
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     if (!isOpen) {
@@ -32,14 +28,14 @@ export default function IntroVideoModal() {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4 py-6 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
-      aria-label="Video d'introduction"
+      aria-label="Video d&apos;introduction"
     >
       <div className="w-[min(94vw,1080px)] overflow-hidden rounded-3xl border border-neon-cyan/30 bg-midnight/90 shadow-[0_0_40px_rgba(45,250,255,0.25)]">
         <div className="aspect-video w-full">
           <iframe
             className="h-full w-full"
             src={VIDEO_SRC}
-            title="Video d'introduction"
+            title="Video d&apos;introduction"
             allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
             allowFullScreen
           />

@@ -7,7 +7,7 @@ export default function DernierRempartPage() {
         <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-neon-cyan/25 bg-midnight/50 px-4 py-3 text-neon-cyan/80 shadow-[0_0_18px_rgba(45,250,255,0.18)]">
           <div className="flex flex-col gap-1">
             <span className="text-[clamp(0.45rem,0.65vw,0.7rem)] uppercase tracking-[0.35em] text-neon-cyan/60">
-              Simulation d'empathie
+              Simulation d&apos;empathie
             </span>
             <span className="text-[clamp(0.85rem,1.1vw,1.05rem)] font-semibold text-white normal-case">
               Protocole Dernier Rempart

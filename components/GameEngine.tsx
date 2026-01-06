@@ -120,7 +120,16 @@ export default function GameEngine() {
   const ringCircumference = 2 * Math.PI * ringRadius;
   const ringOffset = ringCircumference * (1 - timeLeftRatio);
   const ringTransition = reduceMotion ? "none" : "stroke-dashoffset 0.2s linear";
+  const easeOut = [0.16, 1, 0.3, 1] as const;
+  const easeIn = [0.4, 0, 0.7, 0.2] as const;
   const resultPercent = Math.round(humanity);
+  const isBarPhase = uiState.phase === "bar";
+  const barFadeTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.4, ease: easeOut };
+  const barLayoutTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.45, ease: easeOut };
   const hudRadius = 78;
   const hudCircumference = 2 * Math.PI * hudRadius;
   const hudOffset = hudCircumference * (1 - resultPercent / 100);
@@ -129,8 +138,6 @@ export default function GameEngine() {
     "--hud-offset": `${hudOffset}`,
   } as CSSProperties;
   const qaAnimation = uiState.phase === "fade-out" ? "fading" : "visible";
-  const easeOut = [0.16, 1, 0.3, 1] as const;
-  const easeIn = [0.4, 0, 0.7, 0.2] as const;
   const qaVariants: Variants = {
     hidden: { opacity: 0, y: reduceMotion ? 0 : 16 },
     visible: {
@@ -143,10 +150,14 @@ export default function GameEngine() {
     },
     fading: {
       opacity: 0,
-      y: reduceMotion ? 0 : 8,
+      y: reduceMotion ? 0 : 10,
+      x: reduceMotion ? 0 : [0, -4, 4, -2, 2, 0],
+      filter: reduceMotion ? "none" : ["blur(0px)", "blur(4px)", "blur(0px)"],
       transition: {
         duration: reduceMotion ? 0 : FADE_DURATION_MS / 1000,
         ease: easeIn,
+        x: reduceMotion ? undefined : { duration: 0.25, repeat: 1 },
+        filter: reduceMotion ? undefined : { duration: 0.6, times: [0, 0.5, 1] },
       },
     },
   };
@@ -191,9 +202,9 @@ export default function GameEngine() {
       resolvingRef.current = true;
       dispatch({ type: "START_FADE_OUT" });
       setTimeout(() => {
-        dispatch({ type: "SHOW_BAR" });
         const nextPercent = getProgressPercent(questionIndex);
         setHumanity(nextPercent);
+        dispatch({ type: "SHOW_BAR" });
         setPulseIndex(null);
       }, FADE_DURATION_MS);
       setTimeout(() => {
@@ -283,7 +294,7 @@ export default function GameEngine() {
 
   return (
     <div
-      className={`flex h-full min-h-0 flex-col items-center gap-4 text-center ${
+      className={`relative isolate flex h-full w-full min-h-[clamp(420px,60vh,760px)] flex-col items-center gap-4 text-center ${
         uiState.showQA ? "justify-between" : "justify-center"
       }`}
     >
@@ -291,7 +302,7 @@ export default function GameEngine() {
         {uiState.showQA ? (
           <motion.div
             key={activeIndex}
-            className="flex w-full flex-col items-center gap-6"
+            className="relative z-10 flex w-full flex-col items-center gap-6"
             variants={qaVariants}
             initial="hidden"
             animate={qaAnimation}
@@ -426,13 +437,66 @@ export default function GameEngine() {
           </motion.div>
         ) : null}
       </AnimatePresence>
-      <div className="w-full max-w-5xl">
-        <HumanityBar
-          value={humanity}
-          max={HUMANITY_MAX}
-          isLedMode={isLedMode}
-          transitionMs={uiState.phase === "bar" ? BAR_ANIM_MS : 700}
-        />
+      <div
+        className={`relative z-10 flex w-full flex-1 justify-center pb-2 ${
+          isBarPhase ? "items-center" : "items-end"
+        }`}
+      >
+        <motion.div
+          layout
+          layoutId="humanity-bar"
+          transition={barLayoutTransition}
+          animate={{ opacity: isBarPhase ? 1 : 0.96 }}
+          className="relative w-full max-w-5xl"
+        >
+          <AnimatePresence>
+            {isBarPhase ? (
+              <motion.div
+                key="bar-glow"
+                className="pointer-events-none absolute -inset-3 rounded-[28px]"
+                initial={{ opacity: 0, scale: 0.98 }}
+                animate={{ opacity: [0.2, 0.45, 0.3], scale: [0.99, 1.03, 1] }}
+                exit={{ opacity: 0, scale: 0.99 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 1.4,
+                  repeat: reduceMotion ? 0 : Infinity,
+                  ease: easeOut,
+                }}
+                style={{
+                  background:
+                    "radial-gradient(circle at center, rgba(45,250,255,0.38), transparent 70%)",
+                  filter: "blur(12px)",
+                }}
+              />
+            ) : null}
+          </AnimatePresence>
+          <AnimatePresence>
+            {isBarPhase ? (
+              <motion.div
+                key="bar-scan"
+                className="pointer-events-none absolute inset-x-0 -top-6 h-16"
+                initial={{ opacity: 0, y: "120%" }}
+                animate={{ opacity: 0.55, y: "-120%" }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 1.1,
+                  ease: easeOut,
+                }}
+                style={{
+                  background:
+                    "linear-gradient(180deg, transparent 0%, rgba(45,250,255,0.28) 50%, transparent 100%)",
+                  filter: "blur(10px)",
+                }}
+              />
+            ) : null}
+          </AnimatePresence>
+          <HumanityBar
+            value={humanity}
+            max={HUMANITY_MAX}
+            isLedMode={isLedMode}
+            transitionMs={isBarPhase ? BAR_ANIM_MS : 700}
+          />
+        </motion.div>
       </div>
     </div>
   );

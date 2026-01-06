@@ -46,7 +46,7 @@ export default function BestTeamPage() {
           La Best Team
         </h1>
         <p className="mt-4 max-w-2xl text-[clamp(0.95rem,1.3vw,1.2rem)] text-slate-200 normal-case">
-          Une équipe qui brille ensemble. Clique sur une photo pour l'ouvrir en
+          Une équipe qui brille ensemble. Clique sur une photo pour l&apos;ouvrir en
           grand.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">

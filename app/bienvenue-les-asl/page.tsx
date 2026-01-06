@@ -23,7 +23,7 @@ export default function BienvenueLesAslPage() {
           </p>
           <p>
             Vous allez vivre des moments forts - parfois intenses, souvent
-            mémorables - et chacun d'eux vous fera progresser, techniquement
+            mémorables - et chacun d&apos;eux vous fera progresser, techniquement
             comme humainement.
           </p>
           <p>

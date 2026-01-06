@@ -49,14 +49,20 @@ export default function KaxonRougePage() {
       router.replace("/");
       return;
     }
-    setAllowed(true);
+    const timerId = window.setTimeout(() => {
+      setAllowed(true);
+    }, 0);
+    return () => window.clearTimeout(timerId);
   }, [router]);
 
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
-    setIsDebug(new URLSearchParams(window.location.search).has("debug"));
+    const timerId = window.setTimeout(() => {
+      setIsDebug(new URLSearchParams(window.location.search).has("debug"));
+    }, 0);
+    return () => window.clearTimeout(timerId);
   }, []);
 
   useEffect(() => {
@@ -65,8 +71,14 @@ export default function KaxonRougePage() {
     }
     let active = true;
     const timers: number[] = [];
-    setStatusIndex(0);
-    setShowContent(false);
+    timers.push(
+      window.setTimeout(() => {
+        if (active) {
+          setStatusIndex(0);
+          setShowContent(false);
+        }
+      }, 0)
+    );
 
     let elapsed = 0;
     for (let i = 1; i < STATUS_SEQUENCE.length; i += 1) {
@@ -127,7 +139,7 @@ export default function KaxonRougePage() {
         <section className="mx-auto max-w-3xl px-6 pb-24 text-center">
           <div className="glass-panel rounded-3xl px-6 py-10">
             <p className="text-sm uppercase tracking-[0.3em] text-neon-cyan">
-              Vérification d'acc?s...
+              Vérification d&apos;acc?s...
             </p>
           </div>
         </section>
@@ -207,7 +219,7 @@ export default function KaxonRougePage() {
             >
               <p>
                 Grâce à vos choix et à votre persévérance, le système est stabilisé :
-                <strong> l'IA est réparée</strong>.
+                <strong> l&apos;IA est réparée</strong>.
               </p>
               <p className="mt-4">Vous pouvez être fiers de vous.</p>
             </motion.div>
@@ -285,7 +297,7 @@ export default function KaxonRougePage() {
                 href="/"
                 className="inline-flex items-center gap-2 text-neon-cyan transition hover:text-white"
               >
-                Retour à l'accueil
+                Retour à l&apos;accueil
                 <span className="h-px w-6 bg-neon-cyan/70" />
               </Link>
             </motion.div>

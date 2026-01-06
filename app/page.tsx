@@ -21,7 +21,7 @@ export default function Home() {
       <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-screen-xl flex-col justify-center gap-10 px-6 pb-16 pt-8 text-center sm:pt-14">
         <div className="mx-auto max-w-4xl">
           <p className="text-[clamp(10px,1vw,16px)] uppercase tracking-[0.5em] text-neon-cyan/80">
-            Protocole d'accueil
+            Protocole d&apos;accueil
           </p>
           <h1
             className="tron-font glitch-text mt-5 text-[clamp(2.2rem,5.5vw,5.2rem)] font-semibold tracking-[0.35em] text-white"
