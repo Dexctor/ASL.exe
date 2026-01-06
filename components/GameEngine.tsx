@@ -447,13 +447,13 @@ export default function GameEngine() {
           layoutId="humanity-bar"
           transition={barLayoutTransition}
           animate={{ opacity: isBarPhase ? 1 : 0.96 }}
-          className="relative w-full max-w-5xl"
+          className="relative z-10 w-full max-w-5xl"
         >
           <AnimatePresence>
             {isBarPhase ? (
               <motion.div
                 key="bar-glow"
-                className="pointer-events-none absolute -inset-3 rounded-[28px]"
+                className="pointer-events-none absolute inset-0 z-0 rounded-[28px]"
                 initial={{ opacity: 0, scale: 0.98 }}
                 animate={{ opacity: [0.2, 0.45, 0.3], scale: [0.99, 1.03, 1] }}
                 exit={{ opacity: 0, scale: 0.99 }}
@@ -474,12 +474,12 @@ export default function GameEngine() {
             {isBarPhase ? (
               <motion.div
                 key="bar-scan"
-                className="pointer-events-none absolute inset-x-0 -top-6 h-16"
-                initial={{ opacity: 0, y: "120%" }}
-                animate={{ opacity: 0.55, y: "-120%" }}
+                className="pointer-events-none absolute inset-x-0 top-1/2 z-0 h-12 -translate-y-1/2"
+                initial={{ opacity: 0, y: "60%" }}
+                animate={{ opacity: 0.45, y: "-60%" }}
                 exit={{ opacity: 0 }}
                 transition={{
-                  duration: reduceMotion ? 0 : 1.1,
+                  duration: reduceMotion ? 0 : 1.15,
                   ease: easeOut,
                 }}
                 style={{
@@ -490,12 +490,14 @@ export default function GameEngine() {
               />
             ) : null}
           </AnimatePresence>
-          <HumanityBar
-            value={humanity}
-            max={HUMANITY_MAX}
-            isLedMode={isLedMode}
-            transitionMs={isBarPhase ? BAR_ANIM_MS : 700}
-          />
+          <div className="relative z-10">
+            <HumanityBar
+              value={humanity}
+              max={HUMANITY_MAX}
+              isLedMode={isLedMode}
+              transitionMs={isBarPhase ? BAR_ANIM_MS : 700}
+            />
+          </div>
         </motion.div>
       </div>
     </div>
