@@ -10,30 +10,25 @@ export default function BienvenueLesAslPage() {
         </h1>
         <div className="mt-6 space-y-5 text-[clamp(0.95rem,1.3vw,1.2rem)] leading-relaxed text-slate-200 normal-case">
           <p>
-            Chers ASL, bienvenue à <strong>Kaxon Rouge</strong>.
+            Chers ASL, bienvenue a <strong>Kaxon Rouge</strong>. Vous etes ici
+            dans l&apos;une des meilleures ecoles pour devenir de veritables
+            professionnels du son et de la lumiere.
           </p>
           <p>
-            Ici, vous entrez dans un environnement exigeant, créatif et
-            stimulant, pensé pour former de véritables pros du{" "}
-            <strong>son et de la lumière</strong>.
+            Meme si vous venez tout juste d&apos;arriver, sachez que vous faites
+            deja pleinement partie de la <strong>Homair Family</strong>.
           </p>
           <p>
-            Même si vous arrivez tout juste, retenez une chose : vous faites
-            déjà partie de la <strong>Homair Family</strong>.
+            Votre parcours sera rythme par de nombreux moments, parfois intenses,
+            parfois memorables, mais chacun d&apos;eux vous fera grandir et vous
+            aidera a devenir la meilleure version de vous-memes.
           </p>
           <p>
-            Vous allez vivre des moments forts - parfois intenses, souvent
-            mémorables - et chacun d&apos;eux vous fera progresser, techniquement
-            comme humainement.
+            Un seul mot d&apos;ordre pour vous accompagner tout au long de cette
+            aventure : <strong>travailler en s&apos;amusant, tout en restant serieux</strong>.
           </p>
           <p>
-            Gardez notre règle simple en tête :{" "}
-            <strong>travailler sérieusement, sans jamais oublier le plaisir de
-            créer</strong>.
-          </p>
-          <p>
-            On vous souhaite une excellente formation et une vraie réussite pour
-            la suite.
+            Nous vous souhaitons une excellente formation et beaucoup de reussite.
           </p>
         </div>
       </section>

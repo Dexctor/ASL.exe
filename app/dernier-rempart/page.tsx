@@ -1,4 +1,5 @@
 import GameEngine from "@/components/GameEngine";
+import KaxonUnlockLink from "@/components/KaxonUnlockLink";
 
 export default function DernierRempartPage() {
   return (
@@ -15,7 +16,7 @@ export default function DernierRempartPage() {
           </div>
           <div className="flex items-center gap-2 text-[clamp(0.55rem,0.75vw,0.75rem)] uppercase tracking-[0.3em] text-neon-cyan/70">
             <span className="h-1.5 w-1.5 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(45,250,255,0.8)]" />
-            <span>Système en ligne</span>
+            <span>Systeme en ligne</span>
           </div>
         </div>
         <div className="relative flex-1 overflow-hidden rounded-[36px] border border-neon-cyan/35 bg-midnight/60 p-4 shadow-neon sm:p-6">
@@ -27,6 +28,7 @@ export default function DernierRempartPage() {
             <GameEngine />
           </div>
         </div>
+        <KaxonUnlockLink />
       </section>
     </main>
   );

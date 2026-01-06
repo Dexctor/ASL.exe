@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -13,7 +13,7 @@ type Props = {
 
 export default function HumanityBar({
   value,
-  max = 70,
+  max = 100,
   isLedMode,
   transitionMs = 700,
 }: Props) {
@@ -64,7 +64,7 @@ export default function HumanityBar({
       <div
         className={`flex items-center justify-between uppercase tracking-[0.3em] text-neon-cyan/90 ${labelClass}`}
       >
-        <span>Humanité</span>
+        <span>Humanite</span>
         <span>{displayPercent}%</span>
       </div>
       <div

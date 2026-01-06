@@ -4,12 +4,12 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 const teamPhotos = [
-  { src: "/team/1.jpg", label: "Équipe 01" },
-  { src: "/team/2.jpg", label: "Équipe 02" },
-  { src: "/team/3.jpg", label: "Équipe 03" },
-  { src: "/team/4.jpg", label: "Équipe 04" },
-  { src: "/team/5.jpg", label: "Équipe 05" },
-  { src: "/team/6.jpg", label: "Équipe 06" },
+  { src: "/team/1.jpg", label: "Equipe 01" },
+  { src: "/team/2.jpg", label: "Equipe 02" },
+  { src: "/team/3.jpg", label: "Equipe 03" },
+  { src: "/team/4.jpg", label: "Equipe 04" },
+  { src: "/team/5.jpg", label: "Equipe 05" },
+  { src: "/team/6.jpg", label: "Equipe 06" },
 ];
 
 export default function BestTeamPage() {
@@ -46,7 +46,7 @@ export default function BestTeamPage() {
           La Best Team
         </h1>
         <p className="mt-4 max-w-2xl text-[clamp(0.95rem,1.3vw,1.2rem)] text-slate-200 normal-case">
-          Une équipe qui brille ensemble. Clique sur une photo pour l&apos;ouvrir en
+          Une equipe qui brille ensemble. Clique sur une photo pour l&apos;ouvrir en
           grand.
         </p>
         <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">

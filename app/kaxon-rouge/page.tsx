@@ -1,10 +1,11 @@
 "use client";
 
 import type { Variants } from "framer-motion";
-import { motion } from "framer-motion";
+import { cubicBezier, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FINAL_PERCENT } from "@/data/quiz";
 
 const STATUS_SEQUENCE = [
   {
@@ -17,7 +18,7 @@ const STATUS_SEQUENCE = [
   },
   {
     key: "checking",
-    label: "Vérification",
+    label: "Verification",
     durationMs: 900,
     dotClass: "bg-neon-cyan",
     textClass: "text-neon-cyan/80",
@@ -44,8 +45,9 @@ export default function KaxonRougePage() {
   const [isDebug, setIsDebug] = useState(false);
 
   useEffect(() => {
-    const unlocked = sessionStorage.getItem("asl_unlocked") === "true";
-    if (!unlocked) {
+    const stored = sessionStorage.getItem("asl_humanity");
+    const percent = stored ? Number.parseFloat(stored) : 0;
+    if (!Number.isFinite(percent) || percent < FINAL_PERCENT) {
       router.replace("/");
       return;
     }
@@ -108,7 +110,7 @@ export default function KaxonRougePage() {
   }, [allowed, isDebug]);
 
   const status = STATUS_SEQUENCE[Math.min(statusIndex, STATUS_SEQUENCE.length - 1)];
-  const easeOut = [0.16, 1, 0.3, 1] as const;
+  const easeOut = cubicBezier(0.16, 1, 0.3, 1);
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     show: {
@@ -139,7 +141,7 @@ export default function KaxonRougePage() {
         <section className="mx-auto max-w-3xl px-6 pb-24 text-center">
           <div className="glass-panel rounded-3xl px-6 py-10">
             <p className="text-sm uppercase tracking-[0.3em] text-neon-cyan">
-              Vérification d&apos;acc?s...
+              Verification d&apos;acces...
             </p>
           </div>
         </section>
@@ -206,7 +208,7 @@ export default function KaxonRougePage() {
               </div>
               <div>
                 <p className="text-[clamp(0.6rem,0.9vw,0.8rem)] uppercase tracking-[0.4em] text-neon-cyan/70">
-                  Transmission réussie
+                  Transmission reussie
                 </p>
                 <h1 className="tron-font text-[clamp(1.8rem,3.6vw,3.5rem)] font-semibold text-white">
                   Bravo. Mission accomplie.
@@ -218,10 +220,9 @@ export default function KaxonRougePage() {
               variants={itemVariants}
             >
               <p>
-                Grâce à vos choix et à votre persévérance, le système est stabilisé :
-                <strong> l&apos;IA est réparée</strong>.
+                Bravo, vous avez reussi ! Grace a vos efforts, l&apos;IA est
+                maintenant reparee. Vous pouvez etre fiers de vous.
               </p>
-              <p className="mt-4">Vous pouvez être fiers de vous.</p>
             </motion.div>
             <motion.div className="grid gap-4 sm:grid-cols-3" variants={itemVariants}>
               <div className="rounded-2xl border border-neon-cyan/25 bg-slate-950/70 px-4 py-4 shadow-[0_0_16px_rgba(45,250,255,0.15)]">
@@ -239,10 +240,10 @@ export default function KaxonRougePage() {
                     <path d="M12 2 4 5v6c0 5 8 11 8 11s8-6 8-11V5l-8-3z" />
                   </svg>
                   <span className="text-[0.7rem] uppercase tracking-[0.3em] text-neon-cyan/70">
-                    Sécurité
+                    Securite
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-slate-200">Accès valide</p>
+                <p className="mt-2 text-sm text-slate-200">Acces valide</p>
               </div>
               <div className="rounded-2xl border border-neon-cyan/25 bg-slate-950/70 px-4 py-4 shadow-[0_0_16px_rgba(45,250,255,0.15)]">
                 <div className="flex items-center gap-3">
@@ -260,10 +261,10 @@ export default function KaxonRougePage() {
                     <path d="M9 9h6v6H9z" />
                   </svg>
                   <span className="text-[0.7rem] uppercase tracking-[0.3em] text-neon-cyan/70">
-                    Système
+                    Systeme
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-slate-200">Stabilisé</p>
+                <p className="mt-2 text-sm text-slate-200">Stabilise</p>
               </div>
               <div className="rounded-2xl border border-neon-cyan/25 bg-slate-950/70 px-4 py-4 shadow-[0_0_16px_rgba(45,250,255,0.15)]">
                 <div className="flex items-center gap-3">
@@ -285,7 +286,7 @@ export default function KaxonRougePage() {
                     IA
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-slate-200">Réparée</p>
+                <p className="mt-2 text-sm text-slate-200">Reparee</p>
               </div>
             </motion.div>
             <motion.div
@@ -297,7 +298,7 @@ export default function KaxonRougePage() {
                 href="/"
                 className="inline-flex items-center gap-2 text-neon-cyan transition hover:text-white"
               >
-                Retour à l&apos;accueil
+                Retour a l&apos;accueil
                 <span className="h-px w-6 bg-neon-cyan/70" />
               </Link>
             </motion.div>
