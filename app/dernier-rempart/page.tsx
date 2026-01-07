@@ -14,7 +14,7 @@ export default function DernierRempartPage() {
               Protocole Dernier Rempart
             </span>
           </div>
-          <div className="flex items-center gap-2 text-[clamp(0.55rem,0.75vw,0.75rem)] uppercase tracking-[0.3em] text-neon-cyan/70">
+          <div className="flex items-center gap-2 text-[clamp(0.55rem,0.75vw,0.75rem)] uppercase tracking-[0.2em] text-neon-cyan/70 sm:tracking-[0.3em]">
             <span className="h-1.5 w-1.5 rounded-full bg-neon-cyan shadow-[0_0_8px_rgba(45,250,255,0.8)]" />
             <span>Systeme en ligne</span>
           </div>

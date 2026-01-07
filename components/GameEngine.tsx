@@ -287,15 +287,11 @@ export default function GameEngine() {
           window.clearTimeout(completionTimeoutRef.current);
         }
         completionTimeoutRef.current = window.setTimeout(() => {
-          const finalPercent = Math.round(
-            getProgressPercent(questionIndex, progressWeights, answeredRef.current)
-          );
+          const finalPercent = FINAL_PERCENT;
+          setHumanity(finalPercent);
           setCompleted(true);
           sessionStorage.setItem("asl_humanity", String(finalPercent));
-          sessionStorage.setItem(
-            "asl_unlocked",
-            finalPercent >= FINAL_PERCENT ? "true" : "false"
-          );
+          sessionStorage.setItem("asl_unlocked", "true");
           window.dispatchEvent(new Event("asl:unlock"));
         }, BAR_ANIM_MS);
       }

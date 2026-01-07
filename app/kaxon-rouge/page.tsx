@@ -157,7 +157,7 @@ export default function KaxonRougePage() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: isDebug ? 0 : 0.4, ease: easeOut }}
-          className={`mx-auto flex items-center gap-3 rounded-full border px-4 py-2 text-[clamp(0.55rem,0.85vw,0.8rem)] uppercase tracking-[0.5em] ${status.borderClass} bg-midnight/80 shadow-[0_0_16px_rgba(45,250,255,0.2)]`}
+          className={`mx-auto flex items-center gap-3 rounded-full border px-4 py-2 text-[clamp(0.55rem,0.85vw,0.8rem)] uppercase tracking-[0.25em] ${status.borderClass} bg-midnight/80 shadow-[0_0_16px_rgba(45,250,255,0.2)] sm:tracking-[0.5em]`}
         >
           <span
             className={`h-2 w-2 rounded-full ${status.dotClass} shadow-[0_0_10px_rgba(45,250,255,0.7)]`}
@@ -207,9 +207,9 @@ export default function KaxonRougePage() {
                 </svg>
               </div>
               <div>
-                <p className="text-[clamp(0.6rem,0.9vw,0.8rem)] uppercase tracking-[0.4em] text-neon-cyan/70">
-                  Transmission reussie
-                </p>
+              <p className="text-[clamp(0.6rem,0.9vw,0.8rem)] uppercase tracking-[0.25em] text-neon-cyan/70 sm:tracking-[0.4em]">
+                Transmission reussie
+              </p>
                 <h1 className="tron-font text-[clamp(1.8rem,3.6vw,3.5rem)] font-semibold text-white">
                   Bravo. Mission accomplie.
                 </h1>
@@ -290,7 +290,7 @@ export default function KaxonRougePage() {
               </div>
             </motion.div>
             <motion.div
-              className="flex flex-wrap items-center justify-between gap-4 border-t border-neon-cyan/20 pt-4 text-[0.7rem] uppercase tracking-[0.4em] text-neon-cyan/60"
+              className="flex flex-wrap items-center justify-between gap-4 border-t border-neon-cyan/20 pt-4 text-[0.7rem] uppercase tracking-[0.25em] text-neon-cyan/60 sm:tracking-[0.4em]"
               variants={itemVariants}
             >
               <span>Protocole Kaxon Rouge</span>

@@ -18,7 +18,7 @@ const cards = [
 export default function Home() {
   return (
     <main className="relative z-10">
-      <section className="mx-auto flex min-h-[calc(100vh-120px)] max-w-screen-xl flex-col justify-center gap-10 px-6 pb-16 pt-8 text-center sm:pt-14">
+      <section className="mx-auto flex min-h-[calc(100svh-120px)] max-w-screen-xl flex-col justify-center gap-10 px-6 pb-16 pt-8 text-center sm:min-h-[calc(100vh-120px)] sm:pt-14">
         <div className="mx-auto max-w-4xl">
           <p className="text-[clamp(10px,1vw,16px)] uppercase tracking-[0.5em] text-neon-cyan/80">
             Protocole d&apos;accueil
@@ -41,7 +41,7 @@ export default function Home() {
               <h2 className="tron-font text-[clamp(1.2rem,2vw,2.1rem)] font-semibold text-white">
                 {card.title}
               </h2>
-              <span className="mt-6 inline-flex text-[clamp(0.7rem,0.9vw,0.95rem)] uppercase tracking-[0.3em] text-neon-cyan">
+              <span className="mt-6 inline-flex text-[clamp(0.7rem,0.9vw,0.95rem)] uppercase tracking-[0.2em] text-neon-cyan sm:tracking-[0.3em]">
                 Acces
               </span>
             </Link>
