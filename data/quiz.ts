@@ -32,7 +32,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     title: "Peche ou Cerise ?",
-    choices: ["Peche", "Cerise", "J'adore les fruits"],
+    choices: ["Peche", "Cerise", "J'adore les salades de fruits"],
     scores: [5, 5, 7],
   },
   {
@@ -47,7 +47,7 @@ export const QUESTIONS: Question[] = [
   },
   {
     title: "Gald, on a toujours pas nos remboursement Esker",
-    choices: ["On relance", "On attend", "On oublie"],
+    choices: ["Demain", "Ah bon ?", "Dans 2 mois"],
     scores: [6, 4, 2],
   },
 ];
