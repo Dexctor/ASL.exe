@@ -1,66 +1,92 @@
 "use client";
 
-import { cubicBezier, motion, useReducedMotion } from "framer-motion";
+import {
+  AnimatePresence,
+  cubicBezier,
+  motion,
+  useReducedMotion,
+} from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-const teamPhotos = [
-  { src: "/team/1.jpg", label: "Equipe 01" },
-  { src: "/team/2.jpg", label: "Equipe 02" },
-  { src: "/team/3.jpg", label: "Equipe 03" },
-  { src: "/team/4.jpg", label: "Equipe 04" },
-  { src: "/team/5.jpg", label: "Equipe 05" },
-  { src: "/team/6.jpg", label: "Equipe 06" },
+const mediaItems = [
+  { src: "/img/IMG_2079.MOV", type: "video", label: "IMG 2079" },
+  { src: "/img/IMG_2082.JPG", type: "image", label: "IMG 2082" },
+  { src: "/img/IMG_2101.JPG", type: "image", label: "IMG 2101" },
+  { src: "/img/IMG_2114.JPG", type: "image", label: "IMG 2114" },
+  { src: "/img/IMG_2184.JPG", type: "image", label: "IMG 2184" },
+  { src: "/img/IMG_2190.JPG", type: "image", label: "IMG 2190" },
+  { src: "/img/IMG_2192.JPG", type: "image", label: "IMG 2192" },
+  { src: "/img/IMG_2195.JPG", type: "image", label: "IMG 2195" },
+  { src: "/img/IMG_2202.JPG", type: "image", label: "IMG 2202" },
+  { src: "/img/IMG_2207.JPG", type: "image", label: "IMG 2207" },
+  { src: "/img/IMG_2209.JPG", type: "image", label: "IMG 2209" },
+  { src: "/img/IMG_2217.JPG", type: "image", label: "IMG 2217" },
+  { src: "/img/IMG_2221.MOV", type: "video", label: "IMG 2221" },
+  { src: "/img/IMG_2297.jpeg", type: "image", label: "IMG 2297" },
+  { src: "/img/IMG_2298.mov", type: "video", label: "IMG 2298" },
+  { src: "/img/IMG_2302.mov", type: "video", label: "IMG 2302" },
+  { src: "/img/IMG_2303.jpeg", type: "image", label: "IMG 2303" },
+  { src: "/img/photo site ASL.png", type: "image", label: "Photo site ASL" },
 ];
+const totalItems = mediaItems.length;
 
 export default function BestTeamPage() {
-  const [active, setActive] = useState<(typeof teamPhotos)[number] | null>(
-    null
-  );
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
   const reduceMotion = useReducedMotion();
   const easeOut = cubicBezier(0.16, 1, 0.3, 1);
-  const gridVariants = {
-    hidden: { opacity: 0 },
-    show: {
+  const activeItem = mediaItems[activeIndex];
+  const slideVariants = {
+    enter: (slideDirection: number) => ({
+      opacity: 0,
+      x: reduceMotion ? 0 : slideDirection * 60,
+      scale: reduceMotion ? 1 : 0.98,
+    }),
+    center: {
       opacity: 1,
-      transition: {
-        duration: reduceMotion ? 0 : 0.25,
-        ease: easeOut,
-        staggerChildren: reduceMotion ? 0 : 0.08,
-        delayChildren: reduceMotion ? 0 : 0.05,
-      },
-    },
-  };
-  const cardVariants = {
-    hidden: { opacity: 0, y: reduceMotion ? 0 : 14 },
-    show: {
-      opacity: 1,
-      y: 0,
+      x: 0,
+      scale: 1,
       transition: {
         duration: reduceMotion ? 0 : 0.45,
         ease: easeOut,
       },
     },
+    exit: (slideDirection: number) => ({
+      opacity: 0,
+      x: reduceMotion ? 0 : slideDirection * -60,
+      scale: reduceMotion ? 1 : 0.98,
+      transition: {
+        duration: reduceMotion ? 0 : 0.3,
+        ease: easeOut,
+      },
+    }),
+  };
+
+  const handlePrevious = () => {
+    setDirection(-1);
+    setActiveIndex((prev) => (prev - 1 + totalItems) % totalItems);
+  };
+
+  const handleNext = () => {
+    setDirection(1);
+    setActiveIndex((prev) => (prev + 1) % totalItems);
   };
 
   useEffect(() => {
-    if (!active) {
-      return;
-    }
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setActive(null);
+      if (event.key === "ArrowLeft") {
+        setDirection(-1);
+        setActiveIndex((prev) => (prev - 1 + totalItems) % totalItems);
       }
-      if (event.key === "Tab") {
-        event.preventDefault();
-        closeButtonRef.current?.focus();
+      if (event.key === "ArrowRight") {
+        setDirection(1);
+        setActiveIndex((prev) => (prev + 1) % totalItems);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
-    closeButtonRef.current?.focus();
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [active]);
+  }, []);
 
   return (
     <main className="relative z-10">
@@ -78,100 +104,79 @@ export default function BestTeamPage() {
             <h1 className="tron-font mt-4 text-[clamp(2rem,4.4vw,4rem)] font-semibold text-white">
               Les coulisses
             </h1>
-            <p className="mt-3 max-w-2xl text-[clamp(0.95rem,1.4vw,1.3rem)] text-slate-200 normal-case">
-              Decouvre les coulisses. Clique sur une photo pour l&apos;ouvrir en
-              grand.
-            </p>
-          </div>
-
-          <div className="relative mt-6 flex flex-wrap gap-3 text-[0.7rem] uppercase tracking-[0.25em] text-neon-cyan/70 sm:tracking-[0.4em]">
-            <div className="rounded-full border border-neon-cyan/30 bg-slate-950/70 px-4 py-2">
-              Equipe active
-            </div>
-            <div className="rounded-full border border-neon-cyan/30 bg-slate-950/70 px-4 py-2">
-              6 portraits
-            </div>
-            <div className="rounded-full border border-neon-cyan/30 bg-slate-950/70 px-4 py-2">
-              Statut: en mission
-            </div>
           </div>
 
           <div className="relative mt-8">
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-8 bg-gradient-to-b from-neon-cyan/10 to-transparent" />
-            <motion.div
-              className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
-              variants={gridVariants}
-              initial="hidden"
-              animate="show"
-            >
-              {teamPhotos.map((photo) => (
-                <motion.button
-                  key={photo.src}
+            <div className="relative mt-6">
+              <div className="relative mx-auto flex w-full max-w-5xl items-center justify-center">
+                <button
                   type="button"
-                  onClick={() => setActive(photo)}
-                  className="group relative overflow-hidden rounded-2xl border border-neon-cyan/30 bg-midnight/70 transition hover:border-neon-cyan/70 hover:shadow-neon"
-                  variants={cardVariants}
+                  onClick={handlePrevious}
+                  className="group absolute left-0 z-10 flex h-10 w-10 -translate-x-3 items-center justify-center rounded-full border border-neon-cyan/50 bg-midnight/80 text-[1.1rem] text-neon-cyan transition hover:border-neon-cyan hover:text-white sm:h-12 sm:w-12 sm:-translate-x-5"
+                  aria-label="Media precedente"
                 >
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition duration-300 group-hover:opacity-100">
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(45,250,255,0.18),transparent)]" />
+                  {"<"}
+                </button>
+                <div className="w-full px-10 sm:px-16">
+                  <div className="relative overflow-hidden rounded-[28px] border border-neon-cyan/30 bg-midnight/80">
+                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(45,250,255,0.18),transparent_60%)]" />
+                    <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
+                      <AnimatePresence initial={false} custom={direction}>
+                        <motion.div
+                          key={activeItem.src}
+                          custom={direction}
+                          variants={slideVariants}
+                          initial="enter"
+                          animate="center"
+                          exit="exit"
+                          className="absolute inset-0"
+                        >
+                          {activeItem.type === "image" ? (
+                            <Image
+                              src={activeItem.src}
+                              alt={activeItem.label}
+                              width={1400}
+                              height={1000}
+                              className="h-full w-full object-cover"
+                              priority
+                            />
+                          ) : (
+                            <video
+                              key={activeItem.src}
+                              className="h-full w-full object-cover"
+                              controls
+                              playsInline
+                              preload="metadata"
+                              src={activeItem.src}
+                            />
+                          )}
+                        </motion.div>
+                      </AnimatePresence>
+                    </div>
                   </div>
-                  <Image
-                    src={photo.src}
-                    alt={photo.label}
-                    width={600}
-                    height={600}
-                    className="h-44 w-full object-cover transition duration-300 group-hover:scale-105 sm:h-56"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
-                  <span className="absolute bottom-3 left-3 text-[clamp(0.6rem,0.8vw,0.85rem)] uppercase tracking-[0.3em] text-neon-cyan">
-                    {photo.label}
-                  </span>
-                </motion.button>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {active ? (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 px-6 py-10"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="team-modal-title"
-          onClick={() => setActive(null)}
-        >
-          <div
-            className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-neon-cyan/50 bg-midnight/90 shadow-neon"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <h2 id="team-modal-title" className="sr-only">
-              {active.label}
-            </h2>
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={() => setActive(null)}
-              className="absolute right-4 top-4 rounded-full border border-neon-cyan/60 px-3 py-2 text-[clamp(0.6rem,0.8vw,0.9rem)] uppercase tracking-[0.3em] text-neon-cyan hover:bg-neon-cyan/20"
-              aria-label="Fermer la photo"
-            >
-              Fermer
-            </button>
-            <Image
-              src={active.src}
-              alt={active.label}
-              width={1200}
-              height={900}
-              className="h-[60svh] w-full object-cover sm:h-[70vh]"
-            />
-            <div className="px-6 py-4 text-[clamp(0.85rem,1.2vw,1.1rem)] text-slate-200 normal-case">
-              {active.label}
+                  <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-[clamp(0.65rem,0.9vw,0.9rem)] uppercase tracking-[0.35em] text-neon-cyan/70">
+                    <span>{activeItem.label}</span>
+                    <span>
+                      {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                      {String(totalItems).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="group absolute right-0 z-10 flex h-10 w-10 translate-x-3 items-center justify-center rounded-full border border-neon-cyan/50 bg-midnight/80 text-[1.1rem] text-neon-cyan transition hover:border-neon-cyan hover:text-white sm:h-12 sm:w-12 sm:translate-x-5"
+                  aria-label="Media suivante"
+                >
+                  {">"}
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      ) : null}
+      </section>
     </main>
   );
 }
