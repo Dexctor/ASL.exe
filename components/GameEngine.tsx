@@ -54,6 +54,7 @@ type UiState = {
 
 type UiAction =
   | { type: "RESET_QUESTION" }
+  | { type: "RESET_ALL" }
   | { type: "READY" }
   | { type: "LOCK" }
   | { type: "START_FADE_OUT" }
@@ -69,6 +70,8 @@ const uiReducer = (state: UiState, action: UiAction): UiState => {
   switch (action.type) {
     case "RESET_QUESTION":
       return { phase: "fade-in", showQA: true, isLocked: false };
+    case "RESET_ALL":
+      return { ...initialUiState };
     case "READY":
       return { ...state, phase: "question" };
     case "LOCK":
@@ -91,6 +94,7 @@ export default function GameEngine() {
     timeLeftSeconds,
     timeLeftRatio,
     cycleId,
+    resetToStart,
   } = useQuestionTimer({
     questionDurationMs: DURATION_PER_Q_MS,
     barDurationMs: BAR_ANIM_MS,
@@ -122,19 +126,19 @@ export default function GameEngine() {
     completedRef.current = completed;
   }, [completed]);
 
-  useEffect(() => {
-    return () => {
-      if (completionTimeoutRef.current !== null) {
-        window.clearTimeout(completionTimeoutRef.current);
-      }
-      if (fadeTimeoutRef.current !== null) {
-        window.clearTimeout(fadeTimeoutRef.current);
-      }
-      if (releaseTimeoutRef.current !== null) {
-        window.clearTimeout(releaseTimeoutRef.current);
-      }
-    };
+  const clearTimers = useCallback(() => {
+    if (completionTimeoutRef.current !== null) {
+      window.clearTimeout(completionTimeoutRef.current);
+    }
+    if (fadeTimeoutRef.current !== null) {
+      window.clearTimeout(fadeTimeoutRef.current);
+    }
+    if (releaseTimeoutRef.current !== null) {
+      window.clearTimeout(releaseTimeoutRef.current);
+    }
   }, []);
+
+  useEffect(() => clearTimers, [clearTimers]);
 
   useEffect(() => {
     const update = () => {
@@ -331,6 +335,34 @@ export default function GameEngine() {
     return () => window.clearTimeout(timerId);
   }, [activeIndex, completed, resolveQuestion, syncedPhase]);
 
+  const resetQuiz = useCallback(() => {
+    clearTimers();
+    resolvingRef.current = false;
+    lastResolvedIndexRef.current = null;
+    answeredRef.current = {};
+    setAnswered({});
+    setHumanity(0);
+    setPulseIndex(null);
+    setCompleted(false);
+    sessionStorage.removeItem("asl_humanity");
+    sessionStorage.removeItem("asl_unlocked");
+    dispatch({ type: "RESET_ALL" });
+    resetToStart();
+  }, [clearTimers, dispatch, resetToStart]);
+
+  useEffect(() => {
+    const handle = () => resetQuiz();
+    window.addEventListener("asl:reset", handle);
+    return () => window.removeEventListener("asl:reset", handle);
+  }, [resetQuiz]);
+
+  useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      resetQuiz();
+    }, 0);
+    return () => window.clearTimeout(timerId);
+  }, [resetQuiz]);
+
   if (completed) {
     return (
       <div className="mx-auto w-full max-w-5xl">
@@ -356,7 +388,7 @@ export default function GameEngine() {
                   {resultPercent}%
                 </div>
                 <div className="text-[clamp(0.55rem,0.8vw,0.75rem)] uppercase tracking-[0.4em] text-neon-cyan/70">
-                  Humanite
+                  Pourcentage de reparations
                 </div>
               </div>
               <div className="hud-scan" aria-hidden="true" />
@@ -398,7 +430,7 @@ export default function GameEngine() {
               Question {activeIndex + 1} / {QUESTIONS.length}
             </div>
             <div className="text-[clamp(9px,0.9vw,13px)] uppercase tracking-[0.4em] text-neon-cyan/50">
-              Regles : 10 dilemmes - 20 s - Humanite 0-100 %
+              Regles : {QUESTIONS.length} questions - 20 s - Pourcentage de reparations 0-100 %
             </div>
             <div className="flex items-center gap-2" aria-hidden="true">
               {QUESTIONS.map((_, index) => {

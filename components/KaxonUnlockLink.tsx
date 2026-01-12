@@ -33,5 +33,14 @@ export default function KaxonUnlockLink() {
     return null;
   }
 
-
+  return (
+    <div className="flex justify-center pb-2">
+      <Link
+        href="/kaxon-rouge"
+        className="inline-flex max-w-full items-center justify-center rounded-full border border-neon-cyan/60 bg-midnight/70 px-5 py-3 text-center text-[0.7rem] uppercase tracking-[0.2em] text-neon-cyan transition hover:bg-neon-cyan/10 hover:text-white sm:tracking-[0.35em]"
+      >
+        <span className="whitespace-normal">Acces protocole Kaxon Rouge</span>
+      </Link>
+    </div>
+  );
 }

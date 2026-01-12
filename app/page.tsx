@@ -11,7 +11,7 @@ const cards = [
   },
   {
     href: "/best-team",
-    title: "La Best Team",
+    title: "Les coulisses",
   },
 ];
 
@@ -48,8 +48,7 @@ export default function Home() {
           ))}
         </div>
         <p className="mx-auto max-w-4xl text-[clamp(0.95rem,1.6vw,1.4rem)] text-slate-200 normal-case">
-          Un espace neon pour synchroniser la mission, tester tes choix et
-          rejoindre la Best Team. Connecte-toi, le systeme est en ligne.
+          Bienvenue a Klaxon Rouge les ASL.
         </p>
       </section>
     </main>

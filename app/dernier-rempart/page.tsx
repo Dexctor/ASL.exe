@@ -1,5 +1,6 @@
 import GameEngine from "@/components/GameEngine";
 import KaxonUnlockLink from "@/components/KaxonUnlockLink";
+import ResetQuizButton from "@/components/ResetQuizButton";
 
 export default function DernierRempartPage() {
   return (
@@ -28,7 +29,10 @@ export default function DernierRempartPage() {
             <GameEngine />
           </div>
         </div>
-        <KaxonUnlockLink />
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+          <ResetQuizButton />
+          <KaxonUnlockLink />
+        </div>
       </section>
     </main>
   );

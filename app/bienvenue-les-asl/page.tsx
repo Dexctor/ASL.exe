@@ -16,8 +16,7 @@ export default function BienvenueLesAslPage() {
               Bienvenue les ASL
             </h1>
             <p className="mt-3 max-w-2xl text-[clamp(0.95rem,1.4vw,1.3rem)] text-slate-200 normal-case">
-              Kaxon Rouge ouvre ses portes. Voici le briefing de depart pour
-              rentrer dans la mission.
+              Bienvenue a Klaxon Rouge les ASL.
             </p>
           </div>
 
@@ -25,29 +24,29 @@ export default function BienvenueLesAslPage() {
             <div className="glass-panel rounded-3xl px-6 py-6 sm:px-8">
               <div className="space-y-5 text-[clamp(0.95rem,1.3vw,1.2rem)] leading-relaxed text-slate-200 normal-case">
                 <p>
-                  Chers ASL, bienvenue a <strong>Kaxon Rouge</strong>. Vous etes
-                  ici dans l&apos;une des meilleures ecoles pour devenir de
-                  veritables professionnels du son et de la lumiere.
+                  Chers ASL, bienvenue a <strong>Klaxon Rouge</strong>. Vous
+                  integrez aujourd&apos;hui l&apos;une des meilleures ecoles pour
+                  devenir de veritables professionnels de l&apos;animation, du
+                  son et de la lumiere.
                 </p>
                 <p>
                   Meme si vous venez tout juste d&apos;arriver, sachez que vous
-                  faites deja pleinement partie de la{" "}
-                  <strong>Homair Family</strong>.
+                  faites deja pleinement partie de la <strong>Homair Family</strong>.
                 </p>
                 <p>
-                  Votre parcours sera rythme par de nombreux moments, parfois
+                  Votre parcours sera rythme par de nombreux moments : parfois
                   intenses, parfois memorables, mais chacun d&apos;eux vous fera
                   grandir et vous aidera a devenir la meilleure version de vous-memes.
                 </p>
                 <div className="h-px w-32 bg-gradient-to-r from-transparent via-neon-cyan/70 to-transparent" />
                 <p>
                   Un seul mot d&apos;ordre pour vous accompagner tout au long de
-                  cette aventure :{" "}
-                  <strong>travailler en s&apos;amusant, tout en restant serieux</strong>.
+                  cette aventure : <strong>travailler en s&apos;amusant, tout en etant serieux</strong>.
                 </p>
                 <p>
-                  Nous vous souhaitons une excellente formation et beaucoup de
-                  reussite.
+                  J&apos;espere que vous avez passe une excellente soiree et qu&apos;elle
+                  restera le premier beau souvenir d&apos;une aventure qui ne fait
+                  que commencer.
                 </p>
               </div>
             </div>
@@ -55,22 +54,12 @@ export default function BienvenueLesAslPage() {
             <div className="flex flex-col gap-5">
               <div className="rounded-3xl border border-neon-cyan/30 bg-slate-950/70 px-6 py-6 shadow-[0_0_20px_rgba(45,250,255,0.18)]">
                 <p className="text-[0.7rem] uppercase tracking-[0.25em] text-neon-cyan/70 sm:tracking-[0.4em]">
-                  Valeurs cle
+                  Valeurs cles
                 </p>
-                <ul className="mt-4 space-y-3 text-[clamp(0.9rem,1.2vw,1.1rem)] text-slate-200">
-                  <li className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(45,250,255,0.9)]" />
-                    Esprit d&apos;equipe et respect.
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-neon-lime shadow-[0_0_10px_rgba(183,255,42,0.9)]" />
-                    Creation sonore et lumiere precise.
-                  </li>
-                  <li className="flex items-center gap-3">
-                    <span className="h-2 w-2 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(45,250,255,0.9)]" />
-                    Rigueur, mais toujours avec plaisir.
-                  </li>
-                </ul>
+                <div className="mt-4 flex items-center gap-3 text-[clamp(0.9rem,1.2vw,1.1rem)] text-slate-200">
+                  <span className="h-2 w-2 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(45,250,255,0.9)]" />
+                  Createur de souvenirs
+                </div>
               </div>
 
               <div className="rounded-3xl border border-neon-cyan/30 bg-midnight/70 px-6 py-6 shadow-[0_0_20px_rgba(45,250,255,0.12)]">

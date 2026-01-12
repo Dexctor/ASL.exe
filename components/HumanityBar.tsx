@@ -64,7 +64,7 @@ export default function HumanityBar({
       <div
         className={`flex items-center justify-between uppercase tracking-[0.3em] text-neon-cyan/90 ${labelClass}`}
       >
-        <span>Humanite</span>
+        <span>Pourcentage de reparations</span>
         <span>{displayPercent}%</span>
       </div>
       <div

@@ -76,11 +76,11 @@ export default function BestTeamPage() {
               Galerie
             </p>
             <h1 className="tron-font mt-4 text-[clamp(2rem,4.4vw,4rem)] font-semibold text-white">
-              La Best Team
+              Les coulisses
             </h1>
             <p className="mt-3 max-w-2xl text-[clamp(0.95rem,1.4vw,1.3rem)] text-slate-200 normal-case">
-              Une equipe qui brille ensemble. Clique sur une photo pour
-              l&apos;ouvrir en grand.
+              Decouvre les coulisses. Clique sur une photo pour l&apos;ouvrir en
+              grand.
             </p>
           </div>
 

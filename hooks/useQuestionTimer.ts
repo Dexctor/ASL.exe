@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 type Options = {
   questionDurationMs: number;
@@ -17,6 +17,7 @@ export default function useQuestionTimer({
   totalQuestions,
 }: Options) {
   const [offsetMs, setOffsetMs] = useState(0);
+  const [manualOffsetMs, setManualOffsetMs] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [phase, setPhase] = useState<"question" | "bar">("question");
   const [timeLeftMs, setTimeLeftMs] = useState(questionDurationMs);
@@ -55,7 +56,7 @@ export default function useQuestionTimer({
     const gameCycleMs = phaseDurationMs * totalQuestions;
 
     const tick = () => {
-      const now = Date.now() + offsetMs;
+      const now = Date.now() + offsetMs + manualOffsetMs;
       const elapsedCycle = ((now % gameCycleMs) + gameCycleMs) % gameCycleMs;
       const nextIndex = Math.floor(elapsedCycle / phaseDurationMs);
       const phaseElapsed = elapsedCycle % phaseDurationMs;
@@ -84,6 +85,19 @@ export default function useQuestionTimer({
       window.cancelAnimationFrame(rafId);
       window.clearInterval(intervalId);
     };
+  }, [barDurationMs, manualOffsetMs, offsetMs, questionDurationMs, totalQuestions]);
+
+  const resetToStart = useCallback(() => {
+    const phaseDurationMs = questionDurationMs + barDurationMs;
+    const gameCycleMs = phaseDurationMs * totalQuestions;
+    if (gameCycleMs <= 0) {
+      return;
+    }
+    setManualOffsetMs((prev) => {
+      const now = Date.now() + offsetMs + prev;
+      const elapsedCycle = ((now % gameCycleMs) + gameCycleMs) % gameCycleMs;
+      return prev - elapsedCycle;
+    });
   }, [barDurationMs, offsetMs, questionDurationMs, totalQuestions]);
 
   return {
@@ -94,5 +108,6 @@ export default function useQuestionTimer({
     timeLeftSeconds,
     timeLeftRatio,
     cycleId,
+    resetToStart,
   };
 }
