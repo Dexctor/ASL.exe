@@ -108,8 +108,7 @@ export default function BestTeamPage() {
 
           <div className="relative mt-8">
             <div className="pointer-events-none absolute left-0 right-0 top-0 h-px bg-gradient-to-r from-transparent via-neon-cyan/60 to-transparent" />
-            <div className="pointer-events-none absolute left-0 right-0 top-0 h-8 bg-gradient-to-b from-neon-cyan/10 to-transparent" />
-            <div className="relative mt-6">
+           <div className="relative mt-6">
               <div className="relative mx-auto flex w-full max-w-5xl items-center justify-center">
                 <button
                   type="button"
@@ -121,7 +120,6 @@ export default function BestTeamPage() {
                 </button>
                 <div className="w-full px-10 sm:px-16">
                   <div className="relative overflow-hidden rounded-[28px] border border-neon-cyan/30 bg-midnight/80">
-                    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(45,250,255,0.18),transparent_60%)]" />
                     <div className="relative aspect-[4/3] w-full sm:aspect-[16/10]">
                       <AnimatePresence initial={false} custom={direction}>
                         <motion.div
